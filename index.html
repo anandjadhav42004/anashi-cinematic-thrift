@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANASHI | Cinematic Thrift Store</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Syncopate:wght@400;700&family=Manrope:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="logo font-cinzel" onclick="navigateTo('home')">ANASHI</div>
+        <div class="nav-links">
+            <a onclick="navigateTo('home')">Home</a>
+            <a onclick="navigateTo('shop')">Collection</a>
+            <a onclick="navigateTo('about')">About</a>
+            <a onclick="navigateTo('admin')">Admin</a>
+        </div>
+        <div class="cart-icon" onclick="navigateTo('cart')">
+            <i class="fa-solid fa-shopping-bag" style="font-size: 1.2rem; cursor: pointer;"></i>
+            <span class="cart-badge" id="nav-cart-count">0</span>
+        </div>
+    </nav>
+
+    <section id="home" class="page-section active">
+        <div class="hero">
+            <div style="z-index: 2; padding: 20px;">
+                <h1 class="font-sync">REDEFINE<br><span style="color:transparent; -webkit-text-stroke: 1px #fff;">LUXURY</span></h1>
+                <p style="margin-bottom: 30px; letter-spacing: 2px;">SUSTAINABLE FASHION CURATED FOR THE BOLD</p>
+                <button class="btn btn-outline" onclick="navigateTo('shop')">EXPLORE COLLECTION</button>
+            </div>
+        </div>
+        
+        <div class="container">
+            <h2 class="font-cinzel" style="text-align: center; margin-bottom: 40px; font-size: 2rem;">Trending Categories</h2>
+            <div class="product-grid">
+                <div class="product-card" onclick="navigateTo('shop')" style="height: 200px; display: flex; align-items: center; justify-content: center; background: url('jacket.jpeg') center/cover; cursor: pointer;">
+                    <h3 style="background: rgba(0,0,0,0.7); padding: 10px 20px;">JACKETS</h3>
+                </div>
+                <div class="product-card" onclick="navigateTo('shop')" style="height: 200px; display: flex; align-items: center; justify-content: center; background: url('https://images.unsplash.com/photo-1503342394128-c104d54dba01?q=80&w=400') center/cover; cursor: pointer;">
+                    <h3 style="background: rgba(0,0,0,0.7); padding: 10px 20px;">DRESSES</h3>
+                </div>
+                <div class="product-card" onclick="navigateTo('shop')" style="height: 200px; display: flex; align-items: center; justify-content: center; background: url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=400') center/cover; cursor: pointer;">
+                    <h3 style="background: rgba(0,0,0,0.7); padding: 10px 20px;">TEES</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop" class="page-section">
+        <div class="container">
+            <h2 class="font-sync" style="margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 20px;">All Products</h2>
+            <div class="product-grid" id="shop-container"></div>
+        </div>
+    </section>
+
+    <section id="cart" class="page-section">
+        <div class="container">
+            <h2 class="font-cinzel" style="margin-bottom: 30px;">Your Bag</h2>
+            <div id="cart-content"></div>
+        </div>
+    </section>
+
+    <section id="checkout" class="page-section">
+        <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px;">
+            <div>
+                <h2 class="font-sync" style="margin-bottom: 20px;">Shipping Details</h2>
+                <form id="checkout-form" onsubmit="processOrder(event)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" placeholder="First Name" required>
+                        <input type="text" placeholder="Last Name" required>
+                    </div>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="text" placeholder="Street Address" required>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" placeholder="City" required>
+                        <input type="text" placeholder="Zip Code" required>
+                    </div>
+                    
+                    <h3 class="font-sync" style="margin: 30px 0 15px;">Payment</h3>
+                    <div style="padding: 15px; border: 1px solid #333; margin-bottom: 10px;">
+                        <input type="radio" name="pay" checked> Credit / Debit Card
+                    </div>
+                    <div style="padding: 15px; border: 1px solid #333; margin-bottom: 20px;">
+                        <input type="radio" name="pay"> UPI / GPay
+                    </div>
+
+                    <button class="btn" style="width: 100%;">Place Order</button>
+                </form>
+            </div>
+
+            <div style="background: #111; padding: 30px; height: fit-content; border: 1px solid #333;">
+                <h3 style="margin-bottom: 20px; font-family: 'Cinzel';">Order Summary</h3>
+                <div id="checkout-summary"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin" class="page-section">
+        <div class="container">
+            <h2 class="font-sync">Admin Dashboard</h2>
+            <div class="product-grid" style="margin: 30px 0;">
+                <div class="product-card" style="padding: 30px; text-align: center;">
+                    <h3>Sales</h3>
+                    <p style="font-size: 2rem; color: var(--accent);">₹1,24,000</p>
+                </div>
+                <div class="product-card" style="padding: 30px; text-align: center;">
+                    <h3>Orders</h3>
+                    <p style="font-size: 2rem; color: var(--accent);">15</p>
+                </div>
+                <div class="product-card" style="padding: 30px; text-align: center;">
+                    <h3>Products</h3>
+                    <p style="font-size: 2rem; color: var(--accent);">8</p>
+                </div>
+            </div>
+            
+            <h3>Recent Orders</h3>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Customer</th><th>Status</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>#1001</td><td>Rohan Das</td><td style="color: yellow;">Processing</td><td>₹1,299</td></tr>
+                    <tr><td>#1002</td><td>Aditi S.</td><td style="color: var(--success);">Shipped</td><td>₹899</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <div class="container" style="text-align: center; max-width: 800px;">
+            <h1 class="font-cinzel" style="font-size: 3rem; margin-bottom: 20px;">Our Story</h1>
+            <p style="line-height: 1.8; color: #aaa;">
+                Anashi was born from a love for the past and a hope for the future. We believe that fashion shouldn't cost the Earth. 
+                Every piece in our collection is handpicked, cleaned, and curated to ensure you get the best of vintage style without the environmental footprint.
+            </p>
+        </div>
+    </section>
+
+    <div id="toast" class="toast">Item added to cart!</div>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
