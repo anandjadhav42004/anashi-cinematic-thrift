@@ -1,32 +1,78 @@
 const products = [
-    { id: 1, title: "Noir Denim Jacket", price: 1299, img: "jacket.jpeg" },
-    { id: 2, title: "Silk Void Shirt", price: 899, img: "Silk.jpeg" },
-    { id: 3, title: "Retro Soul Dress", price: 1499, img: "Retro.jpeg" },
-    { id: 4, title: "Urban Trench", price: 2499, img: "Urban.jpeg" },
-    { id: 5, title: "Vintage Floral", price: 799, img: "Vintage.jpeg" },
-    { id: 6, title: "Grunge Flannel", price: 699, img: "Grunge.jpeg" }
+    
+    { id: 1, title: "Noir Denim Jacket", price: 1299, img: "jacket.jpeg", category: "Western" },
+    { id: 2, title: "Silk Void Shirt", price: 899, img: "Silk.jpeg", category: "Western" },
+    { id: 4, title: "Urban Trench", price: 2499, img: "Urban.jpeg", category: "Western" },
+    
+
+    { id: 5, title: "Vintage Floral Kurti", price: 799, img: "Vintage.jpeg", category: "Indian" },
+    
+
+    { id: 3, title: "Retro Soul Dress", price: 1499, img: "Retro.jpeg", category: "Seasonal" },
+    { id: 6, title: "Grunge Flannel", price: 699, img: "Grunge.jpeg", category: "Seasonal" }
 ];
 
 let cart = JSON.parse(localStorage.getItem('anashiCart')) || [];
 
-function renderShop() {
+let currentCategory = 'All';
+
+function renderShop(filter = 'All') {
+    currentCategory = filter;
     const container = document.getElementById('shop-container');
     if (!container) return;
 
-    container.innerHTML = products.map(p => `
-        <div class="product-card">
-            <div style="overflow:hidden; cursor:pointer;" onclick="addToCart(${p.id})">
-                <img src="${p.img}" class="product-img" alt="${p.title}">
-            </div>
-            <div class="product-info">
-                <h3>${p.title}</h3>
-                <p class="price">₹${p.price.toLocaleString()}</p>
-                <button class="btn" style="width:100%; margin-top:10px;" onclick="addToCart(${p.id})">
-                    Add to Cart
+
+    const categories = ['All', 'Indian', 'Western', 'Seasonal'];
+
+
+    const filterHTML = `
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
+            ${categories.map(cat => `
+                <button 
+                    onclick="renderShop('${cat}')" 
+                    style="
+                        padding: 8px 20px;
+                        border: 1px solid #333;
+                        background: ${currentCategory === cat ? '#fff' : 'transparent'};
+                        color: ${currentCategory === cat ? '#000' : '#fff'};
+                        cursor: pointer;
+                        border-radius: 20px;
+                        transition: 0.3s;
+                        font-size: 0.9rem;
+                    "
+                >
+                    ${cat}
                 </button>
-            </div>
+            `).join('')}
         </div>
-    `).join('');
+    `;
+
+
+    const filteredProducts = filter === 'All' 
+        ? products 
+        : products.filter(p => p.category === filter);
+
+
+    const productsHTML = filteredProducts.length > 0 
+        ? filteredProducts.map(p => `
+            <div class="product-card">
+                <div style="overflow:hidden; cursor:pointer;" onclick="addToCart(${p.id})">
+                    <img src="${p.img}" class="product-img" alt="${p.title}">
+                    <span style="position:absolute; top:10px; left:10px; background:#000; color:#fff; padding:2px 8px; font-size:10px; border-radius:4px;">${p.category}</span>
+                </div>
+                <div class="product-info">
+                    <h3>${p.title}</h3>
+                    <p class="price">₹${p.price.toLocaleString()}</p>
+                    <button class="btn" style="width:100%; margin-top:10px;" onclick="addToCart(${p.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join('')
+        : `<p style="text-align:center; width:100%; color:#888;">No items found in this category.</p>`;
+
+
+    container.innerHTML = filterHTML + productsHTML;
 }
 
 function navigateTo(pageId) {
@@ -50,6 +96,9 @@ function navigateTo(pageId) {
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+
+    if (pageId === 'shop') renderShop('All'); // Changed from renderShop() to renderShop('All')
 
     if (pageId === 'shop') renderShop();
     if (pageId === 'cart') renderCart();
