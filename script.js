@@ -1,13 +1,13 @@
 const products = [
-    
+    // Western
     { id: 1, title: "Noir Denim Jacket", price: 1299, img: "jacket.jpeg", category: "Western" },
     { id: 2, title: "Silk Void Shirt", price: 899, img: "Silk.jpeg", category: "Western" },
     { id: 4, title: "Urban Trench", price: 2499, img: "Urban.jpeg", category: "Western" },
     
-
+    // Indian
     { id: 5, title: "Vintage Floral Kurti", price: 799, img: "Vintage.jpeg", category: "Indian" },
     
-
+    // Seasonal
     { id: 3, title: "Retro Soul Dress", price: 1499, img: "Retro.jpeg", category: "Seasonal" },
     { id: 6, title: "Grunge Flannel", price: 699, img: "Grunge.jpeg", category: "Seasonal" }
 ];
@@ -21,10 +21,10 @@ function renderShop(filter = 'All') {
     const container = document.getElementById('shop-container');
     if (!container) return;
 
-
+    // 1. Define Categories
     const categories = ['All', 'Indian', 'Western', 'Seasonal'];
 
-
+    // 2. Create Filter Buttons HTML
     const filterHTML = `
         <div style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;">
             ${categories.map(cat => `
@@ -47,12 +47,12 @@ function renderShop(filter = 'All') {
         </div>
     `;
 
-
+    // 3. Filter Products
     const filteredProducts = filter === 'All' 
         ? products 
         : products.filter(p => p.category === filter);
 
-
+    // 4. Generate Product Grid HTML
     const productsHTML = filteredProducts.length > 0 
         ? filteredProducts.map(p => `
             <div class="product-card">
@@ -71,7 +71,7 @@ function renderShop(filter = 'All') {
         `).join('')
         : `<p style="text-align:center; width:100%; color:#888;">No items found in this category.</p>`;
 
-
+    // 5. Combine and Render
     container.innerHTML = filterHTML + productsHTML;
 }
 
@@ -97,7 +97,7 @@ function navigateTo(pageId) {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-
+    // Inside navigateTo(pageId)...
     if (pageId === 'shop') renderShop('All'); // Changed from renderShop() to renderShop('All')
 
     if (pageId === 'shop') renderShop();
